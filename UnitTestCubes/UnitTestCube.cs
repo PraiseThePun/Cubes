@@ -11,18 +11,40 @@ namespace UnitTestCubes
         [TestMethod]
         public void TestCreateCubeSizeIsZero()
         {
-            Cube cube;
-            var location = new Point3D(0, 0, 0);
-
-            Assert.ThrowsException<ArgumentException>(() => cube = new Cube(location, 0));
+            Assert.ThrowsException<ArgumentException>(() => new Cube(new Point3D(0, 0, 0), 0));
         }
 
         [TestMethod]
-        public void TestParseInvalidCubeString()
+        public void TestSize()
         {
-            string pattern = "a 000";
+            var size = 4;
+            var cube = new Cube(new Point3D(0, 0, 0), size);
 
-            Assert.ThrowsException<ArgumentException>(() => Cube.Parse(pattern));
+            Assert.AreEqual(size, cube.Size.X);
+        }
+
+        [TestMethod]
+        public void TestCreateCubeSizeIsNegative()
+        {
+            Assert.ThrowsException<ArgumentException>(() => new Cube(new Point3D(0, 0, 0), -1));
+        }
+
+        [TestMethod]
+        public void TestLocation()
+        {
+            var location = new Point3D(0, 0, 0);
+            var cube = new Cube(location, 4);
+
+            Assert.AreEqual(location, cube.Position);
+        }
+
+        [TestMethod]
+        public void TestCalculateVolume()
+        {
+            var cube = new Cube(new Point3D(0, 0, 0), 4);
+            double expected = 64;
+
+            Assert.AreEqual(expected, cube.CalculateVolume());
         }
     }
 }

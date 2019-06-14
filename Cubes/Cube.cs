@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Windows.Media.Media3D;
 
 namespace Cubes
@@ -10,7 +9,9 @@ namespace Cubes
 
         public Cube(Point3D location, double side)
         {
-            var _side = side > 0 ? side : throw new ArgumentException("The cube's size must be a positive number.");
+            if (side <= 0)
+                throw new ArgumentException("The cube's size must be a positive number.");
+
             _rect = new Rect3D(location.X, location.Y, location.Z, side, side, side);
         }
 
@@ -22,30 +23,9 @@ namespace Cubes
             return Math.Pow(Size.X, 3);
         }
 
-        public override T GetShape<T>()
+        public override Rect3D BoundingBox()
         {
-            return (T)Convert.ChangeType(_rect, typeof(T));
-        }
-
-        public static Cube Parse(string text)
-        {
-            var regex = new Regex(@"((\d.)?(\d )){3}(\d.)?(\d)");
-
-            if (regex.IsMatch(text))
-            {
-                var slicedText = text.Split(' ');
-                var x = Convert.ToDouble(slicedText[0]);
-                var y = Convert.ToDouble(slicedText[1]);
-                var z = Convert.ToDouble(slicedText[2]);
-                var side = Convert.ToDouble(slicedText[3]);
-                var location = new Point3D(x, y, z);
-
-                return new Cube(location, side);
-            }
-            else
-            {
-                throw new ArgumentException("The string is not properly formatted.");
-            }
+            return _rect;
         }
     }
 }

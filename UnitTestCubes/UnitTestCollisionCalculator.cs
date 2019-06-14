@@ -14,12 +14,10 @@ namespace UnitTestCubes
             var location2 = new Point3D(8, 8, 8);
             var cube1 = new Cube(location1, 4);
             var cube2 = new Cube(location2, 8);
-            var collider = new CollisionCalculator();
-            double expected = 0;
 
-            double actual = collider.CalculateCubesIntersection(cube1, cube2);
+            var actual = CollisionCalculator.CalculateCubesIntersection(cube1, cube2);
 
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }
 
         [TestMethod]
@@ -29,12 +27,11 @@ namespace UnitTestCubes
             var location2 = new Point3D(2, 2, 2);
             var cube1 = new Cube(location1, 4);
             var cube2 = new Cube(location2, 8);
-            var collider = new CollisionCalculator();
             double expected = 8;
 
-            double actual = collider.CalculateCubesIntersection(cube1, cube2);
+            var actual = CollisionCalculator.CalculateCubesIntersection(cube1, cube2);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual.CalculateVolume());
         }
 
         [TestMethod]
@@ -46,9 +43,24 @@ namespace UnitTestCubes
             var collider = new CollisionCalculator();
             double expected = 64;
 
-            double actual = collider.CalculateCubesIntersection(cube1, cube2);
+            var actual = CollisionCalculator.CalculateCubesIntersection(cube1, cube2);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual.CalculateVolume());
+        }
+
+        [TestMethod]
+        public void TestCubesTouchButDoNotIntersect()
+        {
+            var location1 = new Point3D(0, 0, 0);
+            var location2 = new Point3D(1, 1, 1);
+            var cube1 = new Cube(location1, 1);
+            var cube2 = new Cube(location2, 1);
+            var collider = new CollisionCalculator();
+            double expected = 0;
+
+            var actual = CollisionCalculator.CalculateCubesIntersection(cube1, cube2);
+
+            Assert.AreEqual(expected, actual.CalculateVolume());
         }
     }
 }

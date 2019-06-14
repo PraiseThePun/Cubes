@@ -3,12 +3,15 @@ using System.Windows.Media.Media3D;
 
 namespace Cubes
 {
-    class Prism : Shape
+    public class Prism : Shape
     {
         private Rect3D _rect;
 
         public Prism(Point3D location, Size3D size)
         {
+            if (size.X < 0 || size.Y < 0 || size.Z < 0)
+                throw new ArgumentException("The prism's size must be a positive number.");
+
             _rect = new Rect3D(location, size);
         }
 
@@ -20,9 +23,9 @@ namespace Cubes
             return _rect.SizeX * _rect.SizeY * _rect.SizeZ;
         }
 
-        public override T GetShape<T>()
+        public override Rect3D BoundingBox()
         {
-            return (T)Convert.ChangeType(_rect, typeof(T));
+            return _rect;
         }
     }
 }

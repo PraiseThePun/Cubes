@@ -10,16 +10,15 @@ namespace Cubes
             var cube1 = TryReadCube();
             var cube2 = TryReadCube();
 
-            var collisionCalculator = new CollisionCalculator();
-            double result = collisionCalculator.CalculateCubesIntersection(cube1, cube2);
+            var result = CollisionCalculator.CalculateCubesIntersection(cube1, cube2);
 
-            if (result == 0)
+            if (result == null)
             {
                 Console.WriteLine("The cubes do not collide.");
             }
             else
             {
-                Console.WriteLine("The cubes collide, and the intersection volume is: " + result);
+                Console.WriteLine("The cubes collide, and the intersection volume is: " + result.CalculateVolume());
             }
 
             Console.ReadKey();
@@ -32,23 +31,10 @@ namespace Cubes
             Console.WriteLine("Enter the cube's position and size (x y z side). One decimal maximum: ");
             string input = Console.ReadLine();
 
-            if (ValidateInput(input))
-            {
-                cube = Cube.Parse(input);
-                Console.WriteLine("Cube successfully created.");
-            }
-            else
-            {
-                throw new ArgumentException("The string is not correctly formatted.");
-            }
+            cube = InputParser.ParseCube(input);
+            Console.WriteLine("Cube successfully created.");
 
             return cube;
-        }
-
-        protected static bool ValidateInput(string text)
-        {
-            var regex = new Regex(@"((\d.)?(\d )){3}(\d.)?(\d)");
-            return regex.IsMatch(text);
         }
 
         protected static Cube TryReadCube()

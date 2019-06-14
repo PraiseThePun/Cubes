@@ -8,6 +8,6 @@ namespace Cubes
         public abstract Size3D Size { get; }
 
         public abstract double CalculateVolume();
-        public abstract T GetShape<T>();
+        public abstract Rect3D BoundingBox();
     }
 }
